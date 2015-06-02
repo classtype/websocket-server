@@ -26,9 +26,9 @@ $.error = function(userid, error_msg) {
 |
 |-------------------------------------------------------------------------------------------------*/
 
-$.send = function(userid, event, msg) {
+$.send = function(userid, event, args) {
     for (var id in $.SocketConnect.getUser(userid)) {
-        $.SocketConnect.getConnect(id).send(event, msg);
+        $.SocketConnect.getConnect(id).send(event, args);
     }
 };
 

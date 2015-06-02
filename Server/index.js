@@ -33,11 +33,9 @@ $.Socket.create({
     },
     
 // Обработчик инициализации
-    onInit: function(success) {
-        return {
-            userid: this.getUserID(),
-            name: 'Вася'
-        };
+    onInit: function(id) {
+        console.log('onInit: ' + id);
+        return [this.getUserID(), 'Вася'];
     }
 });
 
@@ -46,10 +44,12 @@ $.Socket.create({
 | -> Добавляем обработчик GetName
 |
 |-------------------------------------------------------------------------------------------------*/
-/*
-$.on('getName', function(success) {
-    console.log('success[id]: ' + success['id']);
+
+$.on('getName', function(id, name) {
+    console.log('ID: ' + id);
+    console.log('name: ' + name);
     console.log('this.getUserID(): ' + this.getUserID());
+    this.send('setName', 1, 2, 3);
 });
-*/
+
 //--------------------------------------------------------------------------------------------------

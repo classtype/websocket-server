@@ -73,15 +73,21 @@ $.SocketClient = $.CT.extend(
 |
 |-------------------------------------------------------------------------------------------------*/
 
-    {public: {send: function(header, body) {
+    {public: {send: function() {
     // Создаем запрос
         var r = [];
         
-    // Заголовок
-        r.push(header);
+    // Переводим аргументы в массив
+        var args = Array.prototype.slice.call(arguments, 0);
         
-    // Тело запроса (по умолчанию пустой объект)
-        r.push(typeof(body) == 'object' ? body : {});
+    // Удаляем первый элемент
+        args.shift();
+        
+    // Добавляем заголовок
+        r.push(arguments[0]);
+        
+    // Добавляем тело запроса (по умолчанию пустой массив)
+        r.push(args);
         
     // Конвертируем в JSON
         var json = JSON.stringify(r);
@@ -93,7 +99,7 @@ $.SocketClient = $.CT.extend(
         }
         
     // Записываем в консоль
-        $.SocketConsole['<-'](header, ($.Socket.isConsole == 'body' ? JSON.stringify(r[1]) : json));
+        $.SocketConsole['<-'](arguments[0], ($.Socket.isConsole == 'body' ? JSON.stringify(r[1]) : json));
     }}},
     
 /*--------------------------------------------------------------------------------------------------

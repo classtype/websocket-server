@@ -31,8 +31,12 @@ $.Socket = $.extend(
         });
         
     // Добавляем обработчик инициализации
-        $.on('Init', function(success) {
-            this.send('Init', p.onInit.call(this, success));
+        $.on('Init', function() {
+        // Переводим аргументы в массив
+            var args = Array.prototype.slice.call(arguments, 0);
+            
+        // Вызываем обработчик инициализации
+            this.send('Init', p.onInit.call(this, args));
         });
         
     /* Консоль
@@ -67,13 +71,13 @@ $.Socket = $.extend(
 |
 |-------------------------------------------------------------------------------------------------*/
 
-    {public: {emit: function(event, connect, success) {
+    {public: {emit: function(event, connect, args) {
     // Проверяем наличие события
         if (this.events[event]) {
         // Проходим по списку обработчиков события
             for (var i = 0; i < this.events[event].length; i++) {
             // Запускаем обработчик
-                this.events[event][i].call(connect, success);
+                this.events[event][i].apply(connect, args);
             }
         }
     }}}

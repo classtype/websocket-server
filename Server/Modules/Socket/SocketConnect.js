@@ -115,7 +115,7 @@ $.SocketConnect = $.extend(
         // Запрос на авторизацию
             if (r[0] == 'Access') {
             // Проверяем авторизацию
-                onAccess.apply(t.getConnect(id), r[1]['args']);
+                onAccess.apply(t.getConnect(id), r[1]);
                 
             // Проверяем прошла-ли авторизация
                 if (t.getConnect(id).getUserID()) {
