@@ -114,17 +114,48 @@ $.SocketConnect = $.extend(
             
         // Запрос на авторизацию
             if (r[0] == 'Access') {
-            // Проверяем авторизацию
-                onAccess.apply(t.getConnect(id), r[1]);
-                
-            // Проверяем прошла-ли авторизация
-                if (t.getConnect(id).getUserID()) {
-                // Привязываем UserID к текущему соединению
-                    t.addUserID(id);
+            // Создаем список аргументов
+                var args = [
+                // OnError
+                    function(error_msg) {
+                        t.getConnect(id).error(error_msg||'Внимание! Ошибка авторизации. Перезагрузите страницу.');
+                    },
                     
-                // Отправляем сообщение об успешной авторизации
-                    return t.getConnect(id).send('Access');
+                // OnComplete
+                    function(userid, data) {
+                    // Задаем UserID
+                        t.getConnect(id).setUserID(userid);
+                        
+                    // Юзер НЕ прошел авторизацию
+                        if (!t.getConnect(id).getUserID()) {
+                        // Отправляем сообщение об ошибке
+                            t.getConnect(id).error('Внимание! Ошибка авторизации. Перезагрузите страницу.');
+                        }
+                        
+                    // Юзер прошел авторизацию
+                        else {
+                        // Задаем информацию о юзере
+                            t.getConnect(id).setData(data);
+                            
+                        // Привязываем UserID к текущему соединению
+                            t.addUserID(id);
+                            
+                        // Отправляем сообщение об успешной авторизации
+                            t.getConnect(id).send('Access');
+                        }
+                    }
+                ];
+                
+            // Добавляем полученные данные в список аргументов
+                for (var i = 0; i < r[1].length; i++) {
+                    args.push(r[1][i]);
                 }
+                
+            // Проверяем авторизацию
+                onAccess.apply(t.getConnect(id), args);
+                
+            // Выходим 
+                return;
             }
             
         // Проверяем авторизацию

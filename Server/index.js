@@ -21,22 +21,39 @@ $.Socket.create({
     host: [process.env.IP, process.env.PORT],
     
 // Обработчик авторизации
-    onAccess: function(userid, password) {
-    // Задаем UserID
-        this.setUserID(userid);
-        
-    // Задаем информацию о юзере
-        this.setData({
-            userid: userid,
-            password: password
-        });
-    },
-    
-// Обработчик инициализации
-    onInit: function(id) {
-        console.log('onInit: ' + id);
-        return [this.getUserID(), 'Вася'];
+    onAccess: function(onError, onComplete, userid, password) {
+    // Пример асинхронного запроса к базе данных
+        setTimeout(function() {
+        // Ошибка авторизации
+            return onError();
+            
+        // Успешная авторизация
+            return onComplete(userid, {
+                userid: userid,
+                password: password
+            });
+        }, 1000);
     }
+});
+
+/*--------------------------------------------------------------------------------------------------
+|
+| -> Добавляем обработчик инициализации
+|
+|-------------------------------------------------------------------------------------------------*/
+
+$.on('Init', function(id) {
+// Указатель
+    var t = this;
+    
+// Пример асинхронного запроса к базе данных
+    setTimeout(function() {
+    // Сообщение в консоли
+        console.log('Init, id: ' + id);
+        
+    // Вызываем обработчик инициализации
+        t.send('Init', 123);
+    }, 1000);
 });
 
 /*--------------------------------------------------------------------------------------------------

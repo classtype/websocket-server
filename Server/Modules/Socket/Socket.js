@@ -30,15 +30,6 @@ $.Socket = $.extend(
             $.SocketConnect.create(ws, p.onAccess);
         });
         
-    // Добавляем обработчик инициализации
-        $.on('Init', function() {
-        // Переводим аргументы в массив
-            var args = Array.prototype.slice.call(arguments, 0);
-            
-        // Вызываем обработчик инициализации
-            this.send('Init', p.onInit.call(this, args));
-        });
-        
     /* Консоль
      * -> all = все запросы
      * -> body = только тело запросов
