@@ -1,0 +1,7 @@
+{
+    "private": true,
+    "dependencies": {
+        "app.init": "1.0.22",
+        "ws": "8.1.0"
+    }
+}

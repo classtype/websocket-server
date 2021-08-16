@@ -1,7 +1,14 @@
 //--------------------------------------------------------------------------------------------------
 
 require('app.init')(
-    './Modules'
+    ['Colors'],
+    [
+        './Modules/Socket/Socket.js',
+        './Modules/Socket/SocketClient.js',
+        './Modules/Socket/SocketConnect.js',
+        './Modules/Socket/SocketConsole.js',
+        './Modules/Socket/SocketCuts.js'
+    ]
 );
 
 /*--------------------------------------------------------------------------------------------------
@@ -18,14 +25,14 @@ $.Socket.create({
     console: 'body',
     
 // Адрес сервера
-    host: [process.env.IP, process.env.PORT],
+    host: ['192.168.1.2', '8081'],
     
 // Обработчик авторизации
     onAccess: function(onError, onComplete, userid, password) {
     // Пример асинхронного запроса к базе данных
         setTimeout(function() {
         // Ошибка авторизации
-            return onError();
+            //return onError();
             
         // Успешная авторизация
             return onComplete(userid, {
@@ -43,16 +50,13 @@ $.Socket.create({
 |-------------------------------------------------------------------------------------------------*/
 
 $.on('Init', function(id) {
-// Указатель
-    var t = this;
-    
 // Пример асинхронного запроса к базе данных
-    setTimeout(function() {
+    setTimeout(() => {
     // Сообщение в консоли
-        console.log('Init, id: ' + id);
+        _= 'Init, id: ' + id;
         
     // Вызываем обработчик инициализации
-        t.send('Init', 123);
+        this.send('Init', 123);
     }, 1000);
 });
 
@@ -63,9 +67,9 @@ $.on('Init', function(id) {
 |-------------------------------------------------------------------------------------------------*/
 
 $.on('getName', function(id, name) {
-    console.log('ID: ' + id);
-    console.log('name: ' + name);
-    console.log('this.getUserID(): ' + this.getUserID());
+    _= 'ID: ' + id;
+    _= 'name: ' + name;
+    _= 'this.getUserID(): ' + this.getUserID();
     this.send('setName', 1, 2, 3);
 });
 
